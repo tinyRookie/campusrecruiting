@@ -1,57 +1,46 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
-
-public class Main {
-    class Point{
-        int dp_value;
-        int sum_temp;
-        public Point(){
-            this.dp_value = 0;
-            this.sum_temp = 0;
-        }
-    }
-    public  int LCS(int n, int[] numbers) {
-        int length = numbers.length;
-        int[] numbers1 = new int[length];
-        for (int i = length - 1; i >= 0; i--) {
-            numbers1[i] = numbers[length - 1 - i];
-        }
-        Point[][] dp = new Point[numbers.length + 1][numbers.length + 1];
-        for(int i = 0;i<=length;i++){
-            for(int j = 0; j <= length; j++){
-                dp[i][j] = new Point();
-            }
-        }
-        int result = 0;
-        for (int i = 1; i <= length; i++) {
-            for (int j = 1; j <= length; j++) {
-                if (numbers[i - 1] == numbers1[j - 1]) {
-                    dp[i][j].dp_value = dp[i-1][j-1].dp_value;
-                    dp[i][j].sum_temp = dp[i-1][j-1].sum_temp + numbers[i-1];
-                    if (result < dp[i][j].sum_temp) result = dp[i][j].sum_temp;
-                } else {
-                    dp[i][j].dp_value = Math.max(dp[i-1][j].dp_value, dp[i][j-1].dp_value);
-                    dp[i][j].sum_temp = Math.max(Math.max(Math.max(numbers[i-1], numbers[j-1]),dp[i-1][j].sum_temp),dp[i][j-1].sum_temp);
-                    if (result < dp[i][j].sum_temp) result = dp[i][j].sum_temp;
-                }
-            }
-        }
-        //System.out.println(result);
-        return result;
-    }
+public class Main{
     public static void main(String args[]){
         Scanner scanner = new Scanner(System.in);
-        int n = scanner.nextInt();
-        int[] numbers = new int[n];
-        for(int i = 0;i<n;i++){
-            numbers[i] = scanner.nextInt();
+        String string = scanner.nextLine();
+        StringBuffer sb = new StringBuffer();
+        List<Character> list1 = new ArrayList<>();
+        List<Character> list2 = new ArrayList<>();
+        for(int i = 0; i<string.length();i++){
+            if (string.charAt(i) >= 'A' && string.charAt(i) <= 'Z' || string.charAt(i) >= 'a' && string.charAt(i) <= 'z'){
+                list1.add(string.charAt(i));
+            }else{
+                list2.add(string.charAt(i));
+            }
         }
-        int sum_max = new Main().LCS(n, numbers);
-        int sum = 0;
-        for(int i : numbers){
-            sum += i;
+        char[] chars = new char[list1.size()];
+        for(int i =0 ;i< chars.length;i++){
+            chars[i] = list1.get(i);
         }
-        System.out.println(sum * 2 - sum_max);
-       // System.out.println(length);
+        Arrays.sort(chars);
+        System.out.println(Arrays.toString(chars));
+        int i = 0;
+        for(i =0; i < chars.length;i++){
+            char temp = chars[i];
+            for(int j = i+1; j < chars.length;j++){
+                if (chars[j] - temp <= 'a' - 'A' && chars[j] != '/' && (chars[j] >= 'a' && chars[j] <= 'z')){
+                    sb.append(chars[j]);
+                    chars[j] = '/';
+                }
+            }
+            if (chars[i] != '/' ) sb.append(chars[i]);
+            if(chars[i] == '/') break;
+        }
+        for(;i<chars.length;i++){
+            if (chars[i] != '/') sb.append(chars[i]);
+        }
+        for(char c : list2){
+            sb.append(c);
+        }
+        System.out.println(sb);
     }
 }
