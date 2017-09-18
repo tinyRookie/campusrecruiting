@@ -49,6 +49,9 @@ public class Person implements Comparable{
         }
         return false;
     }
+    public String getName(){
+        return this.name;
+    }
 
     @Override
     public int hashCode(){
