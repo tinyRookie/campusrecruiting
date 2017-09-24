@@ -2,6 +2,7 @@ package com.huawei.test;
 
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.util.Map;
 
 class DirectMemory {
 
